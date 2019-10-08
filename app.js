@@ -1,10 +1,16 @@
-const express = require("express");
-const app = express();
+var express = require("express");
+var app = express();
 
-app.get("/makers/:param", (req, res) => {
-  let param = req.params.param[0].toUpperCase() + req.params.param.slice(1);
-
-  res.send("<h1>Hola " + param + "!</h1>");
+app.get("/", (req, res) => {
+  var i = 1;
+  var max = 50;
+  for (; i <= max; i++) {
+    if (i % 2 === 0) {
+      res.write(`<p>${i} Soy par!</p>`);
+    }
+    res.write(`<p>${i} Soy impar!</p>`);
+  }
+  res.end();
 });
 
 app.listen(3000, () => console.log("Listening on port 3000!"));
