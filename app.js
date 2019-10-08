@@ -27,37 +27,26 @@ var schema = mongoose.Schema({
 // definimos el modelo
 var Visitor = mongoose.model("Visitor", schema);
 
-app.get("/", (req, res) => {
-  let name = req.query.name;
+app.get("/", async (req, res) => {
+  let name = req.query.name || 'Anónimo';
 
-  Visitor.findOne({ name: name }, function(err, visitor) {
-    // if (err) return console.error(err);
-    if (visitor) {
-      console.log(visitor);
-      visitor.count++;
-      visitor.save(function(err) {
-        if (err) return console.error(err);
-      });
-    } else {
-      if (name) {
-        Visitor.create({ name: `${name}`, count: 1 }, function(err) {
-          if (err) return console.error(err);
-        });
-      } else {
-        Visitor.create({ name: "Anónimo", count: 1 }, function(err) {
-          if (err) return console.error(err);
-        });
-      }
-    }
+  if(name === 'Anónimo'){
+    Visitor.create({ name: name, count: 1 });
+  }else{
+    Visitor.findOne({ name: name },(e,visitor)=>{
+      if(visitor){
+        visitor.count++
+        visitor.save()
+      }else{
+        Visitor.create({ name: name, count: 1 });
+      }  
+    })
+
+
+  }
+  const visitors = await Visitor.find()
+  res.render('index', { visitors: visitors })
   });
 
-  Visitor.find(function(err, visitor) {
-    if (err) return console.error(err);
-    console.log(visitor);
-    res.render("index",{visitors: visitor})
-  });
-
-  // res.send("<h1>El visitante fue almacenado con éxito</h1>");
-});
 
 app.listen(3000, () => console.log("Listening on port 3000!"));
