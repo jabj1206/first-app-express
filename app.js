@@ -1,17 +1,13 @@
 var express = require("express");
 var app = express();
 
-app.set("view engine", "pug");
-app.set("views", "views");
+// app.set("view engine", "pug");
+// app.set("views", "views");
 
-app.use(express.urlencoded());
+// app.use(express.urlencoded());
 
-app.get("/", (req, res) => {
-  res.render("index");
-});
-
-app.post("/", (req, res) => {
-  res.send("<h1>Hola " + req.body.name + "!</h1>");
-});
-
+app.get('/', (req, res) => {
+  let head = req.header('User-Agent')
+  res.send(head)
+})
 app.listen(3000, () => console.log("Listening on port 3000!"));
