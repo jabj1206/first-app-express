@@ -28,25 +28,25 @@ var schema = mongoose.Schema({
 var Visitor = mongoose.model("Visitor", schema);
 
 app.get("/", async (req, res) => {
-  let name = req.query.name || 'Anónimo';
+  let name = req.query.name || "Anónimo";
 
-  if(name === 'Anónimo'){
-    Visitor.create({ name: name, count: 1 });
-  }else{
-    Visitor.findOne({ name: name },(e,visitor)=>{
-      if(visitor){
-        visitor.count++
+  if (name === "Anónimo") {
+    let visitor = new Visitor({ name: name, count: 1 });
+    visitor.save()
+  } else {
+    Visitor.findOne({ name: name }, (e, visitor) => {
+      if (visitor) {
+        visitor.count++;
+        visitor.save();
+      } else {
+        let visitor = Visitor({ name: name, count: 1 });
         visitor.save()
-      }else{
-        Visitor.create({ name: name, count: 1 });
-      }  
-    })
-
-
+      }
+    });
   }
-  const visitors = await Visitor.find()
-  res.render('index', { visitors: visitors })
-  });
 
+  const visitors = await Visitor.find();
+  res.render("index", { visitors: visitors });
+});
 
 app.listen(3000, () => console.log("Listening on port 3000!"));
