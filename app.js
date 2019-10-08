@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-
+app.use(express.urlencoded());
 app.set("view engine", "pug");
 app.set("views", "views");
 
@@ -34,7 +34,7 @@ app.get("/", async (req, res) => {
     let visitor = new Visitor({ name: name, count: 1 });
     visitor.save()
   } else {
-    Visitor.findOne({ name: name }, (e, visitor) => {
+    await Visitor.findOne({ name: name }, (e, visitor) => {
       if (visitor) {
         visitor.count++;
         visitor.save();
