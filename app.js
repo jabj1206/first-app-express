@@ -6,9 +6,9 @@ app.get("/", (req, res) => {
   var max = 50;
   for (; i <= max; i++) {
     if (i % 2 === 0) {
-      res.write(`<p>${i} Soy par!</p>`);
+      res.write(`<p>${i} Soy Par!</p>`);
     } else {
-      res.write(`<p>${i} Soy impar!</p>`);
+      res.write(`<p>${i} Soy Impar!</p>`);
     }
   }
   res.end();
