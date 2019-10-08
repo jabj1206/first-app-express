@@ -7,8 +7,9 @@ app.get("/", (req, res) => {
   for (; i <= max; i++) {
     if (i % 2 === 0) {
       res.write(`<p>${i} Soy par!</p>`);
+    } else {
+      res.write(`<p>${i} Soy impar!</p>`);
     }
-    res.write(`<p>${i} Soy impar!</p>`);
   }
   res.end();
 });
