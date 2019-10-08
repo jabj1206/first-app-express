@@ -1,17 +1,17 @@
 var express = require("express");
 var app = express();
 
+app.set('view engine', 'pug');
+app.set('views', 'views');
+
+app.use(express.urlencoded());
+
 app.get("/", (req, res) => {
-  var i = 1;
-  var max = 50;
-  for (; i <= max; i++) {
-    if (i % 2 === 0) {
-      res.write(`<p>${i} Soy Par!</p>`);
-    } else {
-      res.write(`<p>${i} Soy Impar!</p>`);
-    }
-  }
-  res.end();
+  res.render("index");
+});
+
+app.post('/', (req, res) => {
+  res.send("Hola " + req.body.name);
 });
 
 app.listen(3000, () => console.log("Listening on port 3000!"));
