@@ -2,8 +2,13 @@ html
   head
     title Pares e impares
   body
-    form(method='POST' action='/')  
-      div.form-group
-        label(for='name')
-        input#name.form-control(type='text', placeholder='first and last' name='name')
-        button.btn.btn-primary(type='submit') Sign up
+    table 
+      tr
+        th Id
+        th Name
+        th Visits
+      each visitor in visitors
+        tr
+          td= visitor._id
+          td= visitor.name
+          td= visitor.count 
