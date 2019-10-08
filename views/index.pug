@@ -1,14 +1,16 @@
 html
   head
-    title Pares e impares
+    title Visitantes
   body
-    table 
-      tr
-        th Id
-        th Name
-        th Visits
-      each visitor in visitors
+    table
+      thead 
         tr
-          td= visitor._id
-          td= visitor.name
-          td= visitor.count 
+          th Id
+          th Name
+          th Visits
+        tbody
+          each visitor in visitors
+            tr
+              td= visitor._id
+              td= visitor.name
+              td= visitor.count 
