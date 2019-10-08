@@ -1,52 +1,32 @@
-const express = require("express");
+const express = require('express');
 const app = express();
 const mongoose = require("mongoose");
+
+mongoose.connect(process.env.MONGODB_URL || 'mongodb://localhost:27017/mongo-1', { useNewUrlParser: true });
+mongoose.connection.on("error", function(e){ console.error(e); });
 app.use(express.urlencoded());
-app.set("view engine", "pug");
-app.set("views", "views");
-
-// app.use(express.urlencoded());
-
-mongoose
-  .connect(process.env.MONGODB_URL || "mongodb://localhost:27017/Visitantes", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
-  .catch(error => console.log(error));
-
-mongoose.connection.on("error", err => {
-  console.log(err);
-});
+app.set('view engine', 'pug');
+app.set('views', 'views');
 
 // definimos el schema
-var schema = mongoose.Schema({
-  name: String,
-  count: Number
-});
-
+var schema = mongoose.Schema({ count: Number ,name: String });
 // definimos el modelo
-var Visitor = mongoose.model("Visitor", schema);
-
-app.get("/", async (req, res) => {
-  let name = req.query.name || "Anónimo";
-
-  if (name === "Anónimo") {
-    let visitor = new Visitor({ name: name, count: 1 });
-    visitor.save()
-  } else {
-    await Visitor.findOne({ name: name }, (e, visitor) => {
-      if (visitor) {
-        visitor.count++;
-        visitor.save();
-      } else {
-        let visitor = Visitor({ name: name, count: 1 });
-        visitor.save()
-      }
-    });
+var RecurrentVisitor = mongoose.model("RecurrentVisitor", schema);
+app.get('/', async (req, res) => {
+  let visitor
+  let name = req.query.name || 'Anónimo';
+  if(name === 'Anónimo')
+    visitor = new RecurrentVisitor({ name: name, count: 1 });
+  else{
+    visitor = await RecurrentVisitor.findOne({ name: name })
+    if(visitor)
+      visitor.count += 1;
+    else
+      visitor = new RecurrentVisitor({ name: name, count: 1 });
   }
-
-  const visitors = await Visitor.find();
-  res.render("index", { visitors: visitors });
+  await visitor.save();
+  const visitors = await RecurrentVisitor.find()
+  res.render('visitors', { visitors: visitors })
 });
 
-app.listen(3000, () => console.log("Listening on port 3000!"));
+app.listen(3000, () => console.log('listening 3000'));
