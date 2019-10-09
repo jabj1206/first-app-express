@@ -1,4 +1,15 @@
-html
-  head
-  body
-    block content
+extends layout
+
+block content
+  .container
+    a(href="/register").button.is-link Registrarse
+    table.table.is-bordered.is-narrow.is-hoverable
+      thead
+        tr
+          th Name
+          th Email
+      tbody
+        each user in users
+          tr
+            td= user.name
+            td= user.email

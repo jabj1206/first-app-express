@@ -1,5 +1,20 @@
-html
-  head
-    title Pares e impares
-  body
-    h1= text
+extends layout
+
+block content
+  div.container
+    form(action="/register" method="post")
+      .field
+        label(for='name').label Name:
+        .control
+        input(type="text" name="name" class='input')
+      .field
+        label(for='email').label Email:
+        .control
+        input(type="email" name="email" class='input')
+      .field
+        label(for='Password').label Password:
+        .control
+        input(type="password" name="password" class='input')
+      .field.is-grouped
+        .control
+          button.button.is-link Submit
