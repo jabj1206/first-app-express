@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  div.container
+    -if(error)
+      .notification.is-danger
+        button.delete
+        span= error
+    form(action="/login" method="post")
+      .field
+        label(for='email').label Email:
+        .control
+        input#name(type="text" name="email" class='input')
+      .field
+        label(for='Password').label Password:
+        .control
+        input#password(type="password" name="password" class='input')
+      .field.is-grouped
+        .control
+          button.button.is-link Login
+        a(href="/register").button.is-link Register
